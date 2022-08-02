@@ -5,7 +5,9 @@ class Api::V1::AqiController < ApplicationController
     def show
         if logged_in?
             @profile = current_profile
-            response = HTTP.get("https://api.waqi.info/feed/geo:#{@profile.latitude};#{@profile.longitude}/?token=7f992417654e5568c51283c92448fbd16798ef78")
+            token = ENV["AQI_TOKEN"]
+            puts(token)
+            response = HTTP.get("https://api.waqi.info/feed/geo:#{@profile.latitude};#{@profile.longitude}/?token=#{token}")
             if response.status.code == 200
                 responseBody = JSON.parse(response.body)
                 aqi = responseBody["data"]["aqi"]
